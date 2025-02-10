@@ -1,0 +1,119 @@
+//tj wangchuk and josh
+//playlist sim
+//extra displays all songgs
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cstdlib>
+
+using namespace std;
+
+
+void displayMenu() {
+    cout << "\nMenu:\n";
+    cout << "1. Select a song from predefined list\n";
+    cout << "2. Add your own song\n";
+    cout << "3. Play all songs in order\n";
+    cout << "4. Play all songs in shuffle order\n";
+    cout << "5. Exit\n";
+    //displays all songs as extra
+    cout << "6. Display all songs in playlist\n";
+}
+//used ai because the memory wasnt saving
+void selectSong(const vector<string>& predefinedSongs, vector<string>& playlist) {
+    cout << "\nSelect a song from the predefined list:\n";
+    for (int i = 0; i < predefinedSongs.size(); i++) {
+        cout << i + 1 << ". " << predefinedSongs[i] << endl;
+    }
+    int choice;
+    cout << "Enter the number of the song you want to add: ";
+    while (!(cin >> choice) || choice < 1 || choice > predefinedSongs.size()) {
+        cout << "Invalid input. Please enter a valid number: ";
+    }
+    cin.ignore();
+    playlist.push_back(predefinedSongs[choice - 1]);
+    cout << predefinedSongs[choice - 1] << " has been added to your playlist.\n";
+}
+//function that adds songs
+void addOwnSong(vector<string>& playlist) {
+    string song;
+    cout << "Enter the title of the song you want to add: ";
+    getline(cin >> ws, song);
+    playlist.push_back(song);
+    cout << song << " has been added to your playlist.\n";
+}
+//plays in order
+void playInOrder(const vector<string>& playlist) {
+    if (playlist.empty()) {
+        cout << "Your playlist is empty.\n";
+    } else {
+        cout << "\nPlaying songs in order:\n";
+        for (int i = 0; i < playlist.size(); i++) {
+            cout << "Now playing: " << playlist[i] << endl;
+        }
+    }
+}
+///shuffles
+void playInShuffle(vector<string> playlist) {
+    if (playlist.empty()) {
+        cout << "Your playlist is empty.\n";
+    } else {
+        for (int i = playlist.size() - 1; i > 0; i--) {
+            int j = rand() % (i + 1);
+            swap(playlist[i], playlist[j]);
+        }
+        cout << "\nPlaying songs in shuffle order:\n";
+        for (int i = 0; i < playlist.size(); i++) {
+            cout << "Now playing: " << playlist[i] << endl;
+        }
+    }
+}
+//ai because it wouldnt display
+void displayPlaylist(const vector<string>& playlist) {
+    if (playlist.empty()) {
+        cout << "Your playlist is empty.\n";
+    } else {
+        cout << "\nYour playlist:\n";
+        for (int i = 0; i < playlist.size(); i++) {
+            cout << i + 1 << ". " << playlist[i] << endl;
+        }
+    }
+}
+//main functiion
+int main() {
+    vector<string> predefinedSongs = {
+        "Beauty and the Beat",
+        "Wants and Needs",
+        "Fe!n",
+        "Give me everything",
+        "Mr. Brightside"
+    };
+    vector<string> playlist;
+
+    while (true) {
+        displayMenu();
+        int choice;
+        cout << "Enter your choice: ";
+        while (!(cin >> choice)) {
+            cout << "Invalid input. Please enter a valid number: ";
+        }
+//basd on user input
+        if (choice == 1) {
+            selectSong(predefinedSongs, playlist);
+        } else if (choice == 2) {
+            addOwnSong(playlist);
+        } else if (choice == 3) {
+            playInOrder(playlist);
+        } else if (choice == 4) {
+            playInShuffle(playlist);
+        } else if (choice == 5) {
+            cout << "Exiting the program.\n";
+            break;
+        } else if (choice == 6) {
+            displayPlaylist(playlist);
+        } else {
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+    return 0;
+}
